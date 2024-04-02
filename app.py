@@ -20,8 +20,9 @@ with open("./data/ratings.json") as f:
 
 current_user = None
 
-# Define a helper function to calculate average rating for a movie.
+
 def get_average_rating(movie_id):
+    """Define a helper function to calculate average rating for a movie."""
     movie_ratings = [rating for rating in ratings if rating["movie_id"] == movie_id]
     if movie_ratings:
         return sum(rating["rating"] for rating in movie_ratings) / len(movie_ratings)
