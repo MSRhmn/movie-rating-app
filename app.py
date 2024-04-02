@@ -65,7 +65,7 @@ def add_movie():
     ):
         return jsonify({"error": "Missing required movie details"}), 400
 
-        # Update movies.json file
+    # Update 'movies.json' file
     with open("./data/movies.json", "r+") as f:
         movies_data = json.load(f)
         new_movie = {
@@ -77,6 +77,41 @@ def add_movie():
         json.dump(movies_data, f, indent=4)
 
     return jsonify(new_movie), 201
+
+
+@app.route("/movies/<int:movie_id>/rate", methods=["POST"])
+def rate_movie(movie_id):
+    if not current_user:
+        return jsonify({"error": "You must be logged in to rate a movie"}), 401
+
+    data = request.get_json()
+    if not data or not data.get("rating"):
+        return jsonify({"error": "Missing rating value"}), 400
+
+    rating = data["rating"]
+    if not isinstance(rating, float) or rating < 0 or rating > 5:
+        return jsonify({"error": "Invalid rating value"}), 400
+
+    already_rated = any(
+        rating["movie_id"] == movie_id and rating["user_id"] == current_user["id"]
+        for rating in ratings
+    )
+    if already_rated:
+        return jsonify({"error": "You already rated this movie"}), 400
+
+    new_rating = {
+        "id": len(ratings) + 1,
+        "user_id": current_user["id"],
+        "movie_id": movie_id,
+        "rating": rating,
+    }
+    ratings.append(new_rating)
+
+    # Update ratings.json file
+    with open("ratings.json", "w") as f:
+        json.dump(ratings, f, indent=4)
+
+    return jsonify({"message": "Movie rated successfully"})
 
 
 if __name__ == "__main__":
