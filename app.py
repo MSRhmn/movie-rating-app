@@ -59,5 +59,30 @@ def get_movie(movie_id):
     return jsonify({"error": "Movie not found"}), 404
 
 
+@app.route("/movies", methods=["POST"])
+def add_movie():
+    if not current_user:
+        return jsonify({"error": "You must be logged in to add a movie"}), 401
+
+    data = request.get_json()
+    if not data or not all(
+        key in data for key in ("name", "genre", "rating", "release_date")
+    ):
+        return jsonify({"error": "Missing required movie details"}), 400
+
+        # Update movies.json file
+    with open("./data/movies.json", "r+") as f:
+        movies_data = json.load(f)
+        new_movie = {
+            "id": len(movies_data) + 1,
+            **data,
+        }
+        movies_data.append(new_movie)
+        f.seek(0)
+        json.dump(movies_data, f, indent=4)
+
+    return jsonify(new_movie), 201
+
+
 if __name__ == "__main__":
     app.run(debug=True)
