@@ -1,7 +1,12 @@
 from flask import Flask, request, jsonify
+from flask_login import LoginManager, login_user, login_required, current_user
 import json
 
 app = Flask(__name__)
+app.secret_key = "-Pjp4.?MiZrR"
+
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 # Load example data from JSON files.
 with open("./data/users.json") as f:
