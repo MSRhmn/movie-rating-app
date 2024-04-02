@@ -50,5 +50,14 @@ def get_movies():
     return jsonify(movies)
 
 
+@app.route("/movies/<int:movie_id>", methods=["GET"])
+def get_movie(movie_id):
+    for movie in movies:
+        if movie["id"] == movie_id:
+            movie["average_rating"] = get_average_rating(movie_id)
+            return jsonify(movie)
+    return jsonify({"error": "Movie not found"}), 404
+
+
 if __name__ == "__main__":
     app.run(debug=True)
