@@ -38,5 +38,11 @@ def login():
     return jsonify({"error": "Invalid credentials"}), 401
 
 
+@app.route("/movies", methods=["GET"])
+def get_movies():
+    """List all the movies from the movies db."""
+    return jsonify(movies)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
