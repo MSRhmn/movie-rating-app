@@ -20,8 +20,12 @@ class LoginView(APIView):
         if serializer.is_valid():
             user = serializer.validated_data["user"]
             token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key, "message": "Login Successful"}, status=status.HTTP_200_OK)
+            return Response(
+                {"token": token.key, "message": "Login Successful"},
+                status=status.HTTP_200_OK,
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class MovieListView(generics.ListCreateAPIView):
     queryset = Movie.objects.all()
