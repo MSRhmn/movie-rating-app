@@ -41,6 +41,7 @@ class MovieListView(generics.ListCreateAPIView):
 class MovieDetailView(generics.RetrieveAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class RateMovieView(APIView):
