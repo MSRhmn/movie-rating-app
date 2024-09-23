@@ -28,6 +28,11 @@ class MovieListView(generics.ListCreateAPIView):
     serializer_class = MovieSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    def perform_create(self, serializer):
+        if not self.request.user.is_staff:
+            raise PermissionDenied("You do not have permission to add movies.")
+        serializer.save()
+
 
 class MovieDetailView(generics.RetrieveAPIView):
     queryset = Movie.objects.all()
