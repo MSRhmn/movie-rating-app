@@ -16,18 +16,17 @@ class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        username = request.data.get("username")
-        password = request.data.get("password")
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data["user"]
             token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key, "message": "Login successful"})
-        return Response({"error": "Invalid credentials"}, status=400)
-
+            return Response({"token": token.key, "message": "Login Successful"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class MovieListView(generics.ListCreateAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class MovieDetailView(generics.RetrieveAPIView):
