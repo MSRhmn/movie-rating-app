@@ -40,3 +40,7 @@ class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
         fields = ["id", "user", "movie", "rating", "created_at"]
+
+    def create(self, validated_data):
+        rating = Rating.objects.create(**validated_data)
+        return rating
