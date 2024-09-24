@@ -48,9 +48,10 @@ class RateMovieView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, movie_id):
-        rating_value = request.data.get("rating")
-        movie = Movie.objects.get(id=movie_id)
-        rating = Rating.objects.create(
-            user=request.user, movie=movie, rating=rating_value
-        )
-        return Response({"message": "Movie rated successfully"})
+        movie = get_object_or_404(Movie, id=movie_id)
+        serializer = RatingSerializer({"user": request.user.id, "movie": movie.id, "rating": request.data.get("rating")})
+        
+        if serializer.is_valid():
+            serializer.save(user=request.user, movie=movie)
+            return Response({"message": "Movie rated successfully"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
