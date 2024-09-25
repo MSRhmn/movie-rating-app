@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from .models import User, Movie, Rating
-from .serializers import UserSerializer, MovieSerializer, RatingSerializer
+from .serializers import UserSerializer, MovieSerializer, RatingSerializer, LoginSerializer
 
 
 class RegisterView(generics.CreateAPIView):
