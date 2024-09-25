@@ -4,7 +4,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from .models import User, Movie, Rating
-from .serializers import UserSerializer, MovieSerializer, RatingSerializer, LoginSerializer
+from .serializers import (
+    UserSerializer,
+    MovieSerializer,
+    RatingSerializer,
+    LoginSerializer,
+)
 
 
 class RegisterView(generics.CreateAPIView):
@@ -17,7 +22,7 @@ class LoginView(APIView):
 
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
-        
+
         if serializer.is_valid():
             user = serializer.validated_data["user"]
             token, created = Token.objects.get_or_create(user=user)
