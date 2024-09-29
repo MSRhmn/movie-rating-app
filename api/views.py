@@ -3,6 +3,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
+from django.shortcuts import get_object_or_404
 from .models import User, Movie, Rating
 from .serializers import (
     UserSerializer,
@@ -54,15 +55,17 @@ class RateMovieView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, movie_id):
+        # Get the movie object
         movie = get_object_or_404(Movie, id=movie_id)
+
+        # Pass data to the serializer
         serializer = RatingSerializer(
-            {
-                "user": request.user.id,
-                "movie": movie.id,
-                "rating": request.data.get("rating"),
+            data = {
+                "rating": request.data.get("rating")
             }
         )
 
+        # If the serializer is valid save the rating with validated data, else return error
         if serializer.is_valid():
             serializer.save(user=request.user, movie=movie)
             return Response(
