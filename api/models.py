@@ -4,8 +4,6 @@ from django.db import models
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
-    groups = models.ManyToManyField(Group, related_name="api_user_set")
-    user_permissions = models.ManyToManyField(Permission, related_name="api_user_set")
 
 
 class Movie(models.Model):
