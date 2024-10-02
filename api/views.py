@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
+
 from .models import User, Movie, Rating
 from .serializers import (
     UserSerializer,
@@ -58,16 +59,19 @@ class RateMovieView(APIView):
         # Get the movie object
         movie = get_object_or_404(Movie, id=movie_id)
 
+        # Prepare data for the serializer
+        data = {
+            "rating": request.data.get("rating"),
+            "user": request.user.id,
+            "movie": movie.id
+        }
+
         # Pass data to the serializer
-        serializer = RatingSerializer(
-            data = {
-                "rating": request.data.get("rating")
-            }
-        )
+        serializer = RatingSerializer(data=data)
 
         # If the serializer is valid save the rating with validated data, else return error
         if serializer.is_valid():
-            serializer.save(user=request.user, movie=movie)
+            serializer.save()
             return Response(
                 {"message": "Movie rated successfully"}, status=status.HTTP_201_CREATED
             )
