@@ -40,7 +40,19 @@ class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
         fields = ["id", "user", "movie", "rating", "created_at"]
-        read_only_fields = ["user", "movie", "created_at"]
+        read_only_fields = ["created_at"]
 
     def create(self, validated_data):
-        return Rating.objects.create(**validated_data)
+        # Create a new rating instance
+        rating = Rating.objects.create(**validated_data)
+
+        # Calculate and update the movie's average rating
+        movie = validated_data['movie']
+        average_rating = movie.average_rating()  # Get average rating from method
+
+        # Update the movie's rating field (if you want to store it as average)
+        if average_rating is not None:
+            movie.rating = average_rating
+            movie.save()
+
+        return rating
