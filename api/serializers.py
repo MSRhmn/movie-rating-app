@@ -47,7 +47,7 @@ class RatingSerializer(serializers.ModelSerializer):
         rating = Rating.objects.create(**validated_data)
 
         # Calculate and update the movie's average rating
-        movie = validated_data['movie']
+        movie = validated_data["movie"]
         average_rating = movie.average_rating()  # Get average rating from method
 
         # Update the movie's rating field (if you want to store it as average)

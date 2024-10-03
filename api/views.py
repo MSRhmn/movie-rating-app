@@ -63,7 +63,7 @@ class RateMovieView(APIView):
         data = {
             "rating": request.data.get("rating"),
             "user": request.user.id,
-            "movie": movie.id
+            "movie": movie.id,
         }
 
         # Pass data to the serializer
