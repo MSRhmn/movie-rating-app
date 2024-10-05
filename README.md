@@ -1,7 +1,7 @@
 # Movie Rating App
 
 ## Overview
-This application is a RESTful API built with `Django` that allows users to:
+This application is a RESTful API built with `Django REST Framework` that allows users to:
 - User registration and authentication
 - CRUD operations for movies
 - Rating system for movies
@@ -23,8 +23,8 @@ This application is a RESTful API built with `Django` that allows users to:
 `git clone https://github.com/MSRhmn/movie-rating-app.git`
 `cd movie-rating-app`
 2. Create and activate a virtual environment:
-`python/python3/py -m venv .venv`
-`source .venv/bin/activate`  # On Windows use `.venv\Scripts\activate`
+`python/python3/py -m venv venv`
+`source venv/bin/activate`  # On Windows use `venv\Scripts\activate`
 3. Install required dependencies:
 `pip install -r requirements.txt`
 4. Run migrations:
@@ -47,7 +47,7 @@ This application is a RESTful API built with `Django` that allows users to:
 `curl -X GET http://localhost:8000/api/v1/movies/1/`
 
 ### Add Movie Endpoint
-`curl -X POST http://localhost:8000/api/v1/movies/ -H "Content-Type: application/json" -d '{"name": "The Wizard of Oz", "genre": "Fantasy", "rating": "10", "release_date": "1939-12-12"}'`
+`curl -X POST http://localhost:8000/api/v1/movies/ -H "Content-Type: application/json" -H "Authorization: Token 743c92c2b90be460fe7ae522a18d9cb4373884d1" -d '{"title": "The Croods", "genre": "Animation", "rating": 0, "release_date": "2013-03-22"}'`
 
 ### Rate Movie Endpoint
-`curl -X POST http://localhost:8000/movies/1/rate/ -H "Content-Type: application/json" -d '{"rating": 8}'`
+`curl -X POST http://localhost:8000/api/v1/movies/4/rate/ -H "Content-Type: application/json" -H "Authorization: Token 743c92c2b90be460fe7ae522a18d9cb4373884d1" -d '{"rating": 8}'`
