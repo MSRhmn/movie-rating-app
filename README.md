@@ -47,7 +47,7 @@ This application is a RESTful API built with `Django REST Framework` that allows
 `curl -X GET http://localhost:8000/api/v1/movies/1/`
 
 ### Add Movie Endpoint
-`curl -X POST http://localhost:8000/api/v1/movies/ -H "Content-Type: application/json" -H "Authorization: Token 743c92c2b90be460fe7ae522a18d9cb4373884d1" -d '{"title": "The Croods", "genre": "Animation", "rating": 0, "release_date": "2013-03-22"}'`
+`curl -X POST http://localhost:8000/api/v1/movies/ -H "Content-Type: application/json" -H "Authorization: Token YOUR_AUTH_TOKEN" -d '{"title": "MOVIE_TITLE", "genre": "GENRE_NAME", "rating": 0, "release_date": "0000-00-00"}'`
 
 ### Rate Movie Endpoint
-`curl -X POST http://localhost:8000/api/v1/movies/4/rate/ -H "Content-Type: application/json" -H "Authorization: Token 743c92c2b90be460fe7ae522a18d9cb4373884d1" -d '{"rating": 8}'`
+`curl -X POST http://localhost:8000/api/v1/movies/4/rate/ -H "Content-Type: application/json" -H "Authorization: Token YOUR_AUTH_TOKEN" -d '{"rating": 0}'`
